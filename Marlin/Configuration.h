@@ -503,7 +503,7 @@ const bool Z_MIN_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the l
 #define X_MIN_POS -38
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 300
+#define X_MAX_POS 290
 #define Y_MAX_POS 235
 #define Z_MAX_POS 300
 
@@ -528,7 +528,7 @@ const bool Z_MIN_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the l
 
 #if ENABLED(MESH_BED_LEVELING)
   #define MESH_MIN_X 5
-  #define MESH_MAX_X (257)
+  #define MESH_MAX_X (240)
   #define MESH_MIN_Y 5
   #define MESH_MAX_Y (195)
   #define MESH_NUM_X_POINTS 3  // Don't use more than 7 points per axis, implementation limited.
