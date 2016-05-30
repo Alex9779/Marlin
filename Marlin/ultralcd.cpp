@@ -1101,6 +1101,11 @@ static void lcd_prepare_menu() {
   MENU_ITEM(gcode, MSG_AUTO_HOME, PSTR("G28"));
 
   //
+  // BigBox move head to Dock and fast retract 4mm
+  //
+  MENU_ITEM(gcode, "Dock Head", PSTR("G90\nG1 X75 Y200 F3000\nG1 Y240 F2000\nG1 E-4 F4500"));
+  
+  //
   // Set Home Offsets
   //
   MENU_ITEM(function, MSG_SET_HOME_OFFSETS, lcd_set_home_offsets);
