@@ -69,7 +69,7 @@
 #define E2_DIR_PIN         28
 #define E2_ENABLE_PIN      39
 
-#define LED_PIN            13
+#define LED_PIN             6
 
 #define FAN_PIN             7
 #define FAN1_PIN            8
