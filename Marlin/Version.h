@@ -35,7 +35,7 @@
  * Verbose version identifier which should contain a reference to the location
  * from where the binary was downloaded or the source code was compiled.
  */
-#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION "1.1.0-RC6 BigBox Dual"
+#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION "1.1.0-RC6 strips BigBox Dual"
 
 /**
  * The STRING_DISTRIBUTION_DATE represents when the binary file was built,
@@ -52,7 +52,7 @@
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
  */
-#define MACHINE_NAME "BigBox Dual"
+#define MACHINE_NAME "strips BigBox Dual"
 
 /**
  * The SOURCE_CODE_URL is the location where users will find the Marlin Source
@@ -60,7 +60,7 @@
  * has a distinct Github fork— the Source Code URL should just be the main
  * Marlin repository.
  */
-#define SOURCE_CODE_URL "https://github.com/Alex9779/Marlin"
+#define SOURCE_CODE_URL "https://github.com/strips/Marlin"
 
 /**
  * Default generic printer UUID.
