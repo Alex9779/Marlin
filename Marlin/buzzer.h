@@ -23,16 +23,18 @@
 #ifndef __BUZZER_H__
 #define __BUZZER_H__
 
+#include "types.h"
 #include "fastio.h"
 #include "circularqueue.h"
 #include "temperature.h"
+
+#include "MarlinConfig.h"
 
 #define TONE_QUEUE_LENGTH 4
 
 /**
  * @brief Tone structure
- * @details Simple abstration of a tone based on a duration and a frequency.
- *
+ * @details Simple abstraction of a tone based on a duration and a frequency.
  */
 struct tone_t {
   uint16_t duration;
@@ -57,7 +59,7 @@ class Buzzer {
      * @details This will invert the current state of an digital IO pin.
      */
     void invert() {
-      WRITE(BEEPER_PIN, !READ(BEEPER_PIN));
+      TOGGLE(BEEPER_PIN);
     }
 
     /**
@@ -104,7 +106,6 @@ class Buzzer {
      */
     void tone(uint16_t const &duration, uint16_t const &frequency = 0) {
       while (buffer.isFull()) {
-        delay(5);
         this->tick();
         thermalManager.manage_heater();
       }
@@ -117,15 +118,28 @@ class Buzzer {
      *          playing the tones in the queue.
      */
     virtual void tick() {
+      const millis_t now = millis();
+
       if (!this->state.endtime) {
         if (this->buffer.isEmpty()) return;
 
         this->state.tone = this->buffer.dequeue();
-        this->state.endtime = millis() + this->state.tone.duration;
-        if (this->state.tone.frequency > 0) this->on();
+        this->state.endtime = now + this->state.tone.duration;
+
+        if (this->state.tone.frequency > 0) {
+          #if ENABLED(SPEAKER)
+            CRITICAL_SECTION_START;
+            ::tone(BEEPER_PIN, this->state.tone.frequency, this->state.tone.duration);
+            CRITICAL_SECTION_END;
+          #else
+            this->on();
+          #endif
+        }
       }
-      else if (ELAPSED(millis(), this->state.endtime)) this->reset();
+      else if (ELAPSED(now, this->state.endtime)) this->reset();
     }
 };
+
+extern Buzzer buzzer;
 
 #endif

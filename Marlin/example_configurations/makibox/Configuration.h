@@ -103,7 +103,6 @@
 // example configuration folder.
 //
 //#define SHOW_CUSTOM_BOOTSCREEN
-
 // @section machine
 
 // SERIAL_PORT selects which serial port should be used for communication with the host.
@@ -263,10 +262,6 @@
 #define HEATER_2_MAXTEMP 275
 #define HEATER_3_MAXTEMP 275
 #define BED_MAXTEMP 150
-
-// If you want the M105 heater power reported in watts, define the BED_WATTS, and (shared for all extruders) EXTRUDER_WATTS
-//#define HOTEND_WATTS (12.0*12.0/6.7) // P=U^2/R
-//#define BED_WATTS (12.0*12.0/1.1)    // P=U^2/R
 
 //===========================================================================
 //============================= PID Settings ================================
@@ -490,10 +485,12 @@
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 8000
-// Speed for the first approach when probing
+// Speed for the first approach when double-probing (with PROBE_DOUBLE_TOUCH)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
-// Speed for the second approach when probing
+// Speed for the "accurate" probe of each point
 #define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2)
+// Use double touch for probing
+//#define PROBE_DOUBLE_TOUCH
 
 //
 // Allen Key Probe is defined in the Delta example configurations.
@@ -549,8 +546,8 @@
 //
 // Probe Raise options provide clearance for the probe to deploy, stow, and travel.
 //
-#define Z_RAISE_PROBE_DEPLOY_STOW 15 // Raise to make room for the probe to deploy / stow
-#define Z_RAISE_BETWEEN_PROBINGS 5  // Raise between probing points.
+#define Z_PROBE_DEPLOY_HEIGHT 15 // Raise to make room for the probe to deploy / stow
+#define Z_PROBE_TRAVEL_HEIGHT 5  // Raise between probing points.
 
 //
 // For M851 give a range for adjusting the Z probe offset
@@ -595,8 +592,8 @@
 
 // @section homing
 
-//#define MIN_Z_HEIGHT_FOR_HOMING 4 // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
-                                    // Be sure you have this distance over your Z_MAX_POS in case.
+//#define Z_HOMING_HEIGHT 4  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
+                             // Be sure you have this distance over your Z_MAX_POS in case.
 
 // ENDSTOP SETTINGS:
 // Sets direction of endstops when homing; 1=MAX, -1=MIN
@@ -720,18 +717,14 @@
 
 // @section homing
 
-// The position of the homing switches
-//#define MANUAL_HOME_POSITIONS  // If defined, MANUAL_*_HOME_POS below will be used
-//#define BED_CENTER_AT_0_0  // If defined, the center of the bed is at (X=0, Y=0)
+// The center of the bed is at (X=0, Y=0)
+//#define BED_CENTER_AT_0_0
 
-// Manual homing switch locations:
-// For deltabots this means top and center of the Cartesian print volume.
-#if ENABLED(MANUAL_HOME_POSITIONS)
-  #define MANUAL_X_HOME_POS 0
-  #define MANUAL_Y_HOME_POS 0
-  #define MANUAL_Z_HOME_POS 0
-  //#define MANUAL_Z_HOME_POS 402 // For delta: Distance between nozzle and print surface after homing.
-#endif
+// Manually set the home position. Leave these undefined for automatic settings.
+// For DELTA this is the top-center of the Cartesian print volume.
+//#define MANUAL_X_HOME_POS 0
+//#define MANUAL_Y_HOME_POS 0
+//#define MANUAL_Z_HOME_POS 0 // Distance between the nozzle to printbed after homing
 
 // Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
 //
@@ -1108,6 +1101,12 @@
 // http://reprap.org/wiki/MaKr3d_MaKrPanel
 //
 //#define MAKRPANEL
+
+//
+// ReprapWorld Graphical LCD
+// https://reprapworld.com/?products_details&products_id/1218
+//
+//#define REPRAPWORLD_GRAPHICAL_LCD
 
 //
 // Activate one of these if you have a Panucatt Devices
