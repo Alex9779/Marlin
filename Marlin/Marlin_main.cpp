@@ -574,6 +574,7 @@ void set_current_from_steppers_for_axis(AxisEnum axis);
   void plan_cubic_move(const float offset[4]);
 #endif
 
+void serial_echopair_P(const char* s_P, const char *v)   { serialprintPGM(s_P); SERIAL_ECHO(v); }
 void serial_echopair_P(const char* s_P, char v)          { serialprintPGM(s_P); SERIAL_CHAR(v); }
 void serial_echopair_P(const char* s_P, int v)           { serialprintPGM(s_P); SERIAL_ECHO(v); }
 void serial_echopair_P(const char* s_P, long v)          { serialprintPGM(s_P); SERIAL_ECHO(v); }
@@ -2067,28 +2068,36 @@ static void clean_up_after_endstop_or_probe_move() {
     float oldYpos = current_position[Y_AXIS]; // save y position
 
     #ifdef _TRIGGERED_WHEN_STOWED_TEST
+
       // If endstop is already false, the Z probe is deployed
-      if (_TRIGGERED_WHEN_STOWED_TEST == deploy) { // closed after the probe specific actions.
-                                                   // Would a goto be less ugly?
-      //while (!_TRIGGERED_WHEN_STOWED_TEST) { idle(); // would offer the opportunity
-      // for a triggered when stowed manual probe.
+      if (_TRIGGERED_WHEN_STOWED_TEST == deploy) {     // closed after the probe specific actions.
+                                                       // Would a goto be less ugly?
+        //while (!_TRIGGERED_WHEN_STOWED_TEST) idle(); // would offer the opportunity
+                                                       // for a triggered when stowed manual probe.
+
+        if (!deploy) endstops.enable_z_probe(false); // Switch off triggered when stowed probes early
+                                                     // otherwise an Allen-Key probe can't be stowed.
     #endif
 
-    #if ENABLED(Z_PROBE_SLED)
-      dock_sled(!deploy);
-    #elif HAS_Z_SERVO_ENDSTOP
-      servo[Z_ENDSTOP_SERVO_NR].move(z_servo_angle[((deploy) ? 0 : 1)]);
-    #elif ENABLED(Z_PROBE_ALLEN_KEY)
-      if (!deploy) run_stow_moves_script();
-      else run_deploy_moves_script();
-     #else
-      // Nothing to be done. Just enable_z_probe below...
-    #endif
+        #if ENABLED(Z_PROBE_SLED)
+
+          dock_sled(!deploy);
+
+        #elif HAS_Z_SERVO_ENDSTOP
+
+          servo[Z_ENDSTOP_SERVO_NR].move(z_servo_angle[deploy ? 0 : 1]);
+
+        #elif ENABLED(Z_PROBE_ALLEN_KEY)
+
+          deploy ? run_deploy_moves_script() : run_stow_moves_script();
+
+        #endif
 
     #ifdef _TRIGGERED_WHEN_STOWED_TEST
-      }; // opened before the probe specific actions
+      } // _TRIGGERED_WHEN_STOWED_TEST == deploy
 
-      if (_TRIGGERED_WHEN_STOWED_TEST == deploy) {
+      if (_TRIGGERED_WHEN_STOWED_TEST == deploy) { // State hasn't changed?
+
         if (IsRunning()) {
           SERIAL_ERROR_START;
           SERIAL_ERRORLNPGM("Z-Probe failed");
@@ -2096,7 +2105,9 @@ static void clean_up_after_endstop_or_probe_move() {
         }
         stop();
         return true;
-      }
+
+      } // _TRIGGERED_WHEN_STOWED_TEST == deploy
+
     #endif
 
     do_blocking_move_to(oldXpos, oldYpos, current_position[Z_AXIS]); // return to position before deploy
