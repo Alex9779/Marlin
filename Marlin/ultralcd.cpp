@@ -1405,11 +1405,10 @@ void kill_screen(const char* lcd_msg) {
     if (_MOVE_XYZ_ALLOWED) {
       MENU_ITEM(submenu, MSG_MOVE_X, lcd_move_x);
       MENU_ITEM(submenu, MSG_MOVE_Y, lcd_move_y);
+      MENU_ITEM(submenu, MSG_MOVE_Z, lcd_move_z);
     }
 
     if (move_menu_scale < 10.0) {
-      if (_MOVE_XYZ_ALLOWED) MENU_ITEM(submenu, MSG_MOVE_Z, lcd_move_z);
-
       #if ENABLED(SWITCHING_EXTRUDER)
         if (active_extruder)
           MENU_ITEM(gcode, MSG_SELECT MSG_E1, PSTR("T0"));
