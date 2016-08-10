@@ -1460,6 +1460,14 @@ void kill_screen(const char* lcd_msg) {
     MENU_ITEM(submenu, MSG_MOVE_1MM, lcd_move_menu_1mm);
     MENU_ITEM(submenu, MSG_MOVE_01MM, lcd_move_menu_01mm);
     //TODO:X,Y,Z,E
+    
+    if (axis_homed[Z_AXIS]) {
+	  MENU_ITEM(gcode, "Move Z to 295", PSTR("G1 Z295 F3000"));
+   }
+   else {
+      MENU_ITEM(gcode, "Move Z to 295", PSTR("G28\nG1 Z295 F3000"));
+   }
+    
     END_MENU();
   }
 
