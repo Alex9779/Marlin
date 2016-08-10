@@ -35,13 +35,13 @@
   /**
    * Marlin release version identifier
    */
-  #define SHORT_BUILD_VERSION "1.1.0-RCBugFix"
+  #define SHORT_BUILD_VERSION "1.1.0-RC7"
 
   /**
    * Verbose version identifier which should contain a reference to the location
    * from where the binary was downloaded or the source code was compiled.
    */
-  #define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION " (Github)"
+  #define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION "1.1.0-RC7"
 
   /**
    * The STRING_DISTRIBUTION_DATE represents when the binary file was built,
