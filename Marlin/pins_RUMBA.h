@@ -47,9 +47,12 @@
 #define Y_MIN_PIN          35
 #define Y_MAX_PIN          34
 
-#define Z_STEP_PIN         57
-#define Z_DIR_PIN          56
-#define Z_ENABLE_PIN       62
+//#define Z_STEP_PIN         57
+//#define Z_DIR_PIN          56
+//#define Z_ENABLE_PIN       62
+#define Z_STEP_PIN         29
+#define Z_DIR_PIN          28
+#define Z_ENABLE_PIN       39
 #define Z_MIN_PIN          33
 #define Z_MAX_PIN          32
 
@@ -65,9 +68,9 @@
 #define E1_DIR_PIN         25
 #define E1_ENABLE_PIN      27
 
-#define E2_STEP_PIN        29
-#define E2_DIR_PIN         28
-#define E2_ENABLE_PIN      39
+//#define E2_STEP_PIN        29
+//#define E2_DIR_PIN         28
+//#define E2_ENABLE_PIN      39
 
 #define LED_PIN             6
 
